@@ -1,5 +1,5 @@
 import math
-from Robotics_Basics_In_CoppeliaSim.Include import sim
+from Robotics_Basics_In_CoppeliaSim import sim
 
 # Coppeliasim
 #   function create_shape(ints, floats, strings, bytes)
