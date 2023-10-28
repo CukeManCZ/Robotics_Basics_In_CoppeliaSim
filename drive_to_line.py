@@ -1,6 +1,13 @@
 import math
 from coppeliasim_zmqremoteapi_client import RemoteAPIClient
 
+client = RemoteAPIClient()
+sim = client.require("sim")
+sim.setStepping(True)
+sim.stopSimulation()
+
+print("Connected.")
+
 
 def create_line(point_a, point_b):
     k_a = point_b[1] - point_a[1]
@@ -44,13 +51,6 @@ def get_yaw_angle(object_handle):
     orientation = sim.getObjectOrientation(object_handle, sim.handle_world)
     return orientation[2]
 
-
-client = RemoteAPIClient()
-sim = client.require("sim")
-sim.setStepping(True)
-sim.stopSimulation()
-
-print("Connected.")
 
 left_motor = sim.getObject("/Left_drive")
 right_motor = sim.getObject("/Right_drive")
