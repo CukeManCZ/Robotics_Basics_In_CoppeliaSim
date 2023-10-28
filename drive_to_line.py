@@ -23,8 +23,6 @@ def controller_line_follow(line_abc, position, orientation, kd=0.5, kh=1):
     d = normal_dist_from_line(line_abc, position)
     gamma_x = line_slope_angle(line_abc)
 
-    print("d:", kd*(-d), "gamma:", kh*(gamma_x - orientation))
-
     max_steering = math.radians(40)
 
     steering = kd*d + kh*(gamma_x - orientation)
@@ -69,24 +67,16 @@ robot_start_pos = sim.getObjectPosition(robot_body, sim.handle_world)
 n_of_iterations = 5
 
 sim.startSimulation()
-for iteration in range(1, n_of_iterations+1, 1):
-    goal_line = create_line(get_xy(goal_p1), get_xy(goal_p2))
-    print(get_xy(goal_p1), get_xy(goal_p2))
-    print(create_line(get_xy(goal_p1), get_xy(goal_p2)))
-    while True:
-        robot_pos = get_xy(robot_object)
-        robot_ori = get_yaw_angle(robot_object)
 
-        gamma = controller_line_follow(goal_line, robot_pos, robot_ori)
+goal_line = create_line(get_xy(goal_p1), get_xy(goal_p2))
+while True:
+    robot_pos = get_xy(robot_object)
+    robot_ori = get_yaw_angle(robot_object)
 
-        sim.setJointTargetVelocity(left_motor, v)
-        sim.setJointTargetVelocity(right_motor, v)
-        sim.setJointTargetPosition(steering_motor, gamma)
+    gamma = controller_line_follow(goal_line, robot_pos, robot_ori)
 
-        sim.step()
+    sim.setJointTargetVelocity(left_motor, v)
+    sim.setJointTargetVelocity(right_motor, v)
+    sim.setJointTargetPosition(steering_motor, gamma)
 
-    sim.setObjectPosition(robot_body, robot_start_pos, sim.handle_world)
-    sim.wait(1)
-    print(iteration, ". iteration successful")
-
-sim.stopSimulation()
+    sim.step()
