@@ -7,6 +7,7 @@ Because robots are expensive we will use free simulator CoppeliaSim. 👍
 
 Installation is possible from official website: https://www.coppeliarobotics.com/downloads (Educational version)
 
+
 Clone the repository with
 ```
 git clone https://github.com/CukeManCZ/Robotics_Basics_In_CoppeliaSim.git
