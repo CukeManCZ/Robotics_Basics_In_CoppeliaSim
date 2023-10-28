@@ -69,10 +69,15 @@ def compute_steering():
 
 
 sim.simxStopSimulation(id, sim.simx_opmode_oneshot_wait)
+
+_, robot_start_pos = sim.simxGetObjectPosition(id, robot_object, -1, sim.simx_opmode_oneshot_wait)
+
+sim.simxSetObjectPosition(id, robot_object, -1, robot_start_pos, sim.simx_opmode_oneshot_wait)
 sim.simxStartSimulation(id, sim.simx_opmode_oneshot_wait)
 
 goal_pos = get_xy(goal_object)
 robot_pos = get_xy(robot_object)
+
 
 while math.dist(goal_pos, robot_pos) > 0.08:
     v = compute_vel()
@@ -86,3 +91,5 @@ while math.dist(goal_pos, robot_pos) > 0.08:
     robot_pos = get_xy(robot_object)
 
 sim.simxPauseSimulation(id, sim.simx_opmode_oneshot_wait)
+
+
