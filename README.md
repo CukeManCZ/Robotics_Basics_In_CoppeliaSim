@@ -2,6 +2,10 @@
 ## This rep is for those who want to learn robotics basics.
 
 ![Drive to point example](Photos/Drive_to_point.png)
+## Implemented algorithms
+- Drive to point
+- Drive to line
+- Drive along path
 
 ## Installation
 Because robots are expensive we will use free simulator CoppeliaSim. 👍
