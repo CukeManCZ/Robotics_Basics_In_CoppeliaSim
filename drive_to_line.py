@@ -8,6 +8,15 @@ sim.stopSimulation()
 
 print("Connected.")
 
+left_motor = sim.getObject("/Left_drive")
+right_motor = sim.getObject("/Right_drive")
+steering_motor = sim.getObject("/Steering_drive")
+
+goal_p1 = sim.getObject("/Line/pA")
+goal_p2 = sim.getObject("/Line/pB")
+robot_object = sim.getObject("/Main_frame")
+robot_body = sim.getObject("/Robot")
+
 
 def create_line(point_a, point_b):
     k_a = point_b[1] - point_a[1]
@@ -26,7 +35,7 @@ def line_slope_angle(line_abc):
     return math.atan2(line_abc[0], -line_abc[1])
 
 
-def controller_line_follow(line_abc, position, orientation, kd=0.5, kh=1):
+def controller_steer_to_line(line_abc, position, orientation, kd=0.5, kh=1):
     d = normal_dist_from_line(line_abc, position)
     gamma_x = line_slope_angle(line_abc)
 
@@ -52,15 +61,6 @@ def get_yaw_angle(object_handle):
     return orientation[2]
 
 
-left_motor = sim.getObject("/Left_drive")
-right_motor = sim.getObject("/Right_drive")
-steering_motor = sim.getObject("/Steering_drive")
-
-goal_p1 = sim.getObject("/Path/pA")
-goal_p2 = sim.getObject("/Path/pB")
-robot_object = sim.getObject("/Main_frame")
-robot_body = sim.getObject("/Robot")
-
 v = 2
 
 robot_start_pos = sim.getObjectPosition(robot_body, sim.handle_world)
@@ -73,7 +73,7 @@ while True:
     robot_pos = get_xy(robot_object)
     robot_ori = get_yaw_angle(robot_object)
 
-    gamma = controller_line_follow(goal_line, robot_pos, robot_ori)
+    gamma = controller_steer_to_line(goal_line, robot_pos, robot_ori)
 
     sim.setJointTargetVelocity(left_motor, v)
     sim.setJointTargetVelocity(right_motor, v)

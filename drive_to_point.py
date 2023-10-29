@@ -16,30 +16,21 @@ goal_object = sim.getObject("/Goal_point")
 robot_object = sim.getObject("/Main_frame")
 robot_body = sim.getObject("/Robot")
 
-wheel_diameter = 0.1
-wheel_base = 0.3
-
 
 def get_xy(object_handle):
     pos = sim.getObjectPosition(object_handle, sim.handle_world)
     return pos[0], pos[1]
 
 
-def compute_vel():
-    kv = 0.7
-    ob1_pos = get_xy(goal_object)
-    ob2_pos = get_xy(robot_object)
-
-    distance = math.dist(ob1_pos, ob2_pos)
+def controller_speed_proportional_to_dist(goal_poit, robot_point, kv=0.7):
+    distance = math.dist(goal_poit, robot_point)
 
     velocity = kv * distance
     return velocity
 
 
-def get_rel_angle():
-    ob1_pos = get_xy(goal_object)
-    ob2_pos = get_xy(robot_object)
-    return math.atan2(ob1_pos[1]-ob2_pos[1], ob1_pos[0]-ob2_pos[0], )
+def get_rel_angle(p1, p2):
+    return math.atan2(p1[1]-p2[1], p1[0]-p2[0])
 
 
 def get_yaw_angle(object_handle):
@@ -47,11 +38,10 @@ def get_yaw_angle(object_handle):
     return orientation[2]
 
 
-def compute_steering():
-    kh = 1
-    diff = get_rel_angle() - get_yaw_angle(robot_object)
+def controller_steer_to_point(goal_point, position, orientation, kh=1, max_steering=55):
+    diff = get_rel_angle(goal_point, position) - orientation
 
-    max_steering = math.radians(55)
+    max_steering = math.radians(max_steering)
 
     if diff > max_steering:
         diff = max_steering
@@ -67,10 +57,11 @@ sim.startSimulation()
 for iteration in range(1, n_of_iterations+1, 1):
     goal_pos = get_xy(goal_object)
     robot_pos = get_xy(robot_object)
+    robot_ori = get_yaw_angle(robot_object)
 
     while math.dist(goal_pos, robot_pos) > 0.08:
-        v = compute_vel()
-        gamma = compute_steering()
+        v = controller_speed_proportional_to_dist(goal_pos, robot_pos)
+        gamma = controller_steer_to_point(goal_pos, robot_pos, robot_ori)
 
         sim.setJointTargetVelocity(left_motor, v)
         sim.setJointTargetVelocity(right_motor, v)
@@ -78,6 +69,7 @@ for iteration in range(1, n_of_iterations+1, 1):
 
         goal_pos = get_xy(goal_object)
         robot_pos = get_xy(robot_object)
+        robot_ori = get_yaw_angle(robot_object)
         sim.step()
 
     sim.setObjectPosition(robot_body, robot_start_pos, sim.handle_world)
