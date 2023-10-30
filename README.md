@@ -1,11 +1,20 @@
 # Robotics Basics In CoppeliaSim
 ## This rep is for those who want to learn robotics basics.
 
-![Drive to point example](Photos/Drive_to_point.png)
+
 ## Implemented algorithms
 - Drive to point
+
+![Drive to point example](Photos/Drive_to_point.png)
 - Drive to line
+
+![Drive to point example](Photos/Drive_to_line.png)
 - Drive along path
+
+![Drive to point example](Photos/Drive_along_path.png)
+- Drive to configuration
+
+![Drive to point example](Photos/Drive_to_configuration.png)
 
 ## Installation
 Because robots are expensive we will use free simulator CoppeliaSim. 👍
