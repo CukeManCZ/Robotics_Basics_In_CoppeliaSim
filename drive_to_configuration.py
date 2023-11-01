@@ -46,7 +46,7 @@ def get_angle_goal_to_global(goal_pose, _robot_pose):
     return beta
 
 
-def controller_speed_proportional_to_dist(goal_poit, robot_point, kv=0.15):
+def controller_speed_proportional_to_dist(goal_poit, robot_point, kv=0.05):
     distance = math.dist(goal_poit, robot_point)
 
     velocity = kv * distance
@@ -61,7 +61,7 @@ def controller_ang_speed_proportional_to_orientation(goal_pose, _robot_pose, ka=
 
 
 # velocity, angular_speed, wheelbase
-def get_steering(vel, ang_vel, l_base, max_steering=55):
+def get_steering(vel, ang_vel, l_base, max_steering=50):
     steering = math.atan2(ang_vel*l_base, vel)
     print("Steering: ", math.degrees(steering))
 
@@ -85,7 +85,7 @@ def deg_p_s(linear_velocity, wheel_radius):
 
 sim.startSimulation()
 L = 0.075   # m
-R = 0.1     # m
+R = 0.05     # m
 
 robot_pose = get_pose(robot_object)
 end_pose = get_pose(goal_object)
@@ -105,10 +105,11 @@ while True:
     gamma = get_steering(v, ang_v, L)
 
     if backing:
-        gamma = get_steering(v, ang_v, L, 30)
         v = -v
-        ang_v = -ang_v
         gamma = -gamma
+        print("backing")
+    else:
+        print("not backing")
 
     sim.setJointTargetVelocity(left_motor, deg_p_s(v, R))
     sim.setJointTargetVelocity(right_motor, deg_p_s(v, R))
