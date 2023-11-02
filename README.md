@@ -1,6 +1,8 @@
 # Robotics Basics In CoppeliaSim
 ## This rep is for those who want to learn robotics basics.
-
+Repository is showing each algorithm separately and then combined
+in 1 class for different types of locomotion systems. These classes
+are adding simplicity for more complex robotic problems.
 
 ## Implemented algorithms
 - Drive to point
@@ -33,4 +35,4 @@ Then use Python pip directly or use your preferred package manager to install **
 python3 -m pip install coppeliasim-zmqremoteapi-client
 ```
 
-If you have any problem with installation you can creat Issue and I will try to help you as soon as I can.
+If you have any problem with installation you can create Issue and I will try to help you as soon as I can.
