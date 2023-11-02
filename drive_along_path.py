@@ -73,7 +73,7 @@ def drive_along_path(path, robo_obj, d, vel):
         # find the nearest point
         j = nearest_point(path, last_point, robo_obj)
 
-        # check case if robot needs to turn to ride forward
+        # check case if robot needs to go throughout points
         if j < last_point:
             j = last_point
         if j > last_point:
